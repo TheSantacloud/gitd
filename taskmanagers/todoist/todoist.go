@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
-	"mgtd/adapters"
+	"github.com/dormunis/gitd/adapters"
 	"net/http"
 	"net/url"
 	"strings"

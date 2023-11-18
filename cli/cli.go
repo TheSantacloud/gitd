@@ -2,8 +2,8 @@ package cli
 
 import (
 	"fmt"
-	"mgtd/adapters"
-	"mgtd/taskmanagers/taskmanager"
+	"github.com/dormunis/gitd/adapters"
+	"github.com/dormunis/gitd/taskmanagers/taskmanager"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -13,9 +13,9 @@ import (
 var settings adapters.Settings
 
 var rootCmd = &cobra.Command{
-	Use:   "mgtd",
-	Short: "mgtd is a CLI for managing tasks",
-	Long: `mgtd is a CLI for managing tasks.
+	Use:   "github.com/dormunis/gitd",
+	Short: "github.com/dormunis/gitd is a CLI for managing tasks",
+	Long: `github.com/dormunis/gitd is a CLI for managing tasks.
     It is designed to work with task managers like Todoist, etc.
     It is also designed to work with archive managers like Obsidian, Notion, etc.`,
 }
@@ -39,8 +39,8 @@ var purgeCmd = &cobra.Command{
 			fmt.Println(err)
 			os.Exit(1)
 		}
-		var timespanString string
-		cmd.Flags().StringVarP(&timespanString, "timespan", "t", "1 month", "timespan to review")
+
+		timespanString, err := cmd.Flags().GetString("timespan")
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -59,6 +59,7 @@ func init() {
 	settings = adapters.GetSettings()
 	rootCmd.AddCommand(reviewCmd)
 	reviewCmd.AddCommand(purgeCmd)
+	purgeCmd.PersistentFlags().String("timespan", "1 month", "timespan to review")
 }
 
 func Execute() {

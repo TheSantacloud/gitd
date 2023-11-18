@@ -1,19 +1,26 @@
 package todoist
 
 import (
-	"mgtd/adapters"
+	"github.com/dormunis/gitd/adapters"
 	"time"
 )
 
 func (t *TodoistSyncResponse) ToTasks() []adapters.Task {
 	var tasks []adapters.Task
 	for _, item := range *t.Items {
+		updatedDate := getLastNoteDateFromItem(*item.ID, t.Notes)
+		if updatedDate != nil && updatedDate.After(*item.AddedAt) {
+			updatedDate = item.UpdatedAt
+		} else {
+			updatedDate = item.AddedAt
+		}
+
 		tasks = append(tasks, adapters.Task{
 			ID:          *item.ID,
 			Project:     t.getProjectName(*item.ProjectID),
 			Content:     *item.Content,
 			CreatedDate: *item.AddedAt,
-			UpdatedDate: getLastNoteDateFromItem(*item.ID, t.Notes),
+			UpdatedDate: *updatedDate,
 			Tags:        *item.Labels,
 			TaskManger:  "todoist",
 			Status:      deriveStatus(item),
@@ -32,14 +39,17 @@ func (t *TodoistSyncResponse) getProjectName(projectID string) string {
 	return "<Unknown>"
 }
 
-func getLastNoteDateFromItem(itemID string, notes *[]Note) time.Time {
-	var latest time.Time
+func getLastNoteDateFromItem(itemID string, notes *[]Note) *time.Time {
+	var latest *time.Time
 	for _, note := range *notes {
-		if *note.ItemID == itemID && note.PostedAt.After(latest) {
-			latest = *note.PostedAt
+		if *note.ItemID == itemID && (latest == nil || note.PostedAt.After(*latest)) {
+			latest = note.PostedAt
 		}
 	}
-	return latest
+	if latest != nil {
+		return latest
+	}
+	return nil
 }
 
 func deriveStatus(item Item) adapters.Status {

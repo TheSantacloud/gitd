@@ -26,14 +26,18 @@ type Settings struct {
 	Todoist TodoistConfig `yaml:"todoist"`
 }
 
-func GetSettings() Settings {
+func GetConfigFilePath() string {
 	home, err := os.UserHomeDir()
 	if err != nil {
 		fmt.Println("Error getting user's home directory:", err)
 		os.Exit(1)
 	}
 
-	configPath := filepath.Join(home, ".mgtd", "config.yaml")
+	return filepath.Join(home, ".gitd", "config.yaml")
+}
+
+func GetSettings() Settings {
+	configPath := GetConfigFilePath()
 
 	data, err := os.ReadFile(configPath)
 	if err != nil {

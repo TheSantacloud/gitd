@@ -1,4 +1,4 @@
-module mgtd
+module github.com/dormunis/gitd
 
 go 1.21.3
 

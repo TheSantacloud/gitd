@@ -3,8 +3,9 @@ package taskmanager
 import (
 	"errors"
 	"fmt"
-	"mgtd/adapters"
-	"mgtd/taskmanagers/todoist"
+	"github.com/dormunis/gitd/adapters"
+	"github.com/dormunis/gitd/taskmanagers/todoist"
+	"time"
 )
 
 type TaskManagerAdapterType string
@@ -47,7 +48,12 @@ func FilterTasks(tasks *[]adapters.Task, fr *adapters.FilterRequest) ([]adapters
 		if fr.Status != nil && task.Status == *fr.Status {
 			continue
 		}
-		// TOOD: implement timespan filtering
+		if fr.AfterTimeSpan != nil {
+			wantedDate := (*fr.AfterTimeSpan).ModifyDate(time.Now(), false)
+			if task.UpdatedDate.Before(wantedDate) {
+				continue
+			}
+		}
 		// TOOD: implement tags filtering
 		filtered = append(filtered, task)
 	}

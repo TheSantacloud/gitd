@@ -5,7 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"golang.org/x/oauth2"
-	"mgtd/adapters"
+	"github.com/dormunis/gitd/adapters"
 	"net/http"
 	"os"
 	"os/exec"
@@ -14,14 +14,14 @@ import (
 )
 
 const (
-	serviceName     = "mgtd"
+	serviceName     = "github.com/dormunis/gitd"
 	accountName     = "AccessToken"
 	redirectUriPort = 13371
 )
 
 var (
 	oauthConfig *oauth2.Config
-	state       = "mgtd"
+	state       = "github.com/dormunis/gitd"
 	tokenMu     sync.Mutex
 	authToken   *oauth2.Token
 	done        = make(chan struct{})

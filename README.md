@@ -1,6 +1,6 @@
-# mgtd - Task Management CLI
+# gitd - Task Management CLI
 
-**mgtd** is a CLI tool designed for managing tasks seamlessly with popular task managers like Todoist and archive managers like Obsidian. It empowers users to streamline their workflow and enhance their Getting Things Done (GTD) methodology.
+**gitd** *(pronounced "git-ee-di")* is a CLI tool designed for managing tasks seamlessly with popular task managers like Todoist and archive managers like Obsidian. It empowers users to streamline their workflow and enhance their Getting Things Done (GTD) methodology.
 
 ## Features
 
@@ -11,17 +11,20 @@
 
 ### Features
 
+- [ ] configurable purge filter (tags, timespan, etc)
 - [ ] add archive managers
 - [ ] add obsidian
 - [ ] add next actions control
 - [ ] add articles support
 - [ ] add "search context" support ("i wanna create a webapp" -> "you wanted to try out shadcn and nextjs14")
 - [ ] setup taskmanager with all the relevant labels and such
+- [ ] setup dotfile
 - [ ] add weekly review process
 - [ ] add monthly review process
 - [ ] make review processes configurable
 - [ ] alfred plugin
 - [ ] daily planner/journal(?)
+- [ ] provide non-interactive replacements for interactive actions
 
 ### Code
 
@@ -42,7 +45,7 @@
 ## Installation
 
 ```bash
-go install github.com/dormunis/mgtd
+go install github.com/dormunis/gitd
 ```
 
 ## Usage
@@ -50,15 +53,15 @@ go install github.com/dormunis/mgtd
 ### Review Phase
 
 ```bash
-mgtd review
+gitd review
 ```
 
-During the review phase, **mgtd** allows you to evaluate all tasks and remove those that are outdated or no longer relevant.
+During the review phase, **gitd** allows you to evaluate all tasks and remove those that are outdated or no longer relevant.
 
 ### Purge Tasks
 
 ```bash
-mgtd review purge --timespan="1 month"
+gitd review purge --timespan="1 month"
 ```
 
 The `purge` command helps clean up your task manager by removing tasks older than the specified timespan.
@@ -67,7 +70,7 @@ The `purge` command helps clean up your task manager by removing tasks older tha
 
 ## Configuration
 
-**mgtd** utilizes a configuration file to adapt to your preferences. Ensure that your settings are correctly configured for seamless integration with your task and archive managers.
+**gitd** utilizes a configuration file to adapt to your preferences. Ensure that your settings are correctly configured for seamless integration with your task and archive managers.
 
 ## Notes
 
@@ -76,7 +79,7 @@ The `purge` command helps clean up your task manager by removing tasks older tha
 
 ## Contributing
 
-Feel free to contribute to the development of **mgtd** by submitting issues or pull requests on the [GitHub repository](https://github.com/dormunis/mgtd).
+Feel free to contribute to the development of **gitd** by submitting issues or pull requests on the [GitHub repository](https://github.com/dormunis/gitd).
 
 ## License
 
@@ -84,5 +87,5 @@ This project is licensed under the [MIT License](LICENSE).
 
 ---
 
-**Note:** This README provides a basic overview of the functionality and usage of **mgtd**. Make sure to check for the latest updates and documentation in the [GitHub repository](https://github.com/dormunis/mgtd)
+**Note:** This README provides a basic overview of the functionality and usage of **gitd**. Make sure to check for the latest updates and documentation in the [GitHub repository](https://github.com/dormunis/gitd)
 

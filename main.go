@@ -1,11 +1,11 @@
 package main
 
 import (
-	"mgtd/cli"
+	"github.com/dormunis/gitd/cli"
 )
 
 func main() {
-	// mgtd review purge
+	// github.com/dormunis/gitd review purge
 	// TODO: get all older than 1 week tasks, go over them iteractively, update task manager and archive manager
 	// TODO: add option to control the age of the tasks to be purged
 	// TODO: add archive manager (obsidian note)
@@ -14,8 +14,8 @@ func main() {
 	// TODO: add customziable option to format archived tasks (e.g. markdown, etc.)
 	// TODO: add customizable option to format the filename of the archived document (e.g. date, etc.)
 
-	// mgtd next
-	// TODO: add get next action by filters (sorted by priority), e.g.: mgtd next --low
+	// github.com/dormunis/gitd next
+	// TODO: add get next action by filters (sorted by priority), e.g.: github.com/dormunis/gitd next --low
 
 	cli.Execute()
 }

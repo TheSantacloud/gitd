@@ -2,8 +2,8 @@ package cli
 
 import (
 	"fmt"
-	"mgtd/adapters"
-	"mgtd/taskmanagers/taskmanager"
+	"github.com/dormunis/gitd/adapters"
+	"github.com/dormunis/gitd/taskmanagers/taskmanager"
 	"os"
 	"strings"
 
@@ -168,7 +168,8 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case key.Matches(msg, m.keys.Save):
 			return m, tea.Quit
 		case key.Matches(msg, m.keys.Quit):
-			return nil, tea.Quit
+			os.Exit(1)
+			return m, tea.Quit
 		case key.Matches(msg, m.keys.Help):
 			m.help.ShowAll = !m.help.ShowAll
 		}
@@ -266,8 +267,7 @@ func verifyPurge(actions *[]adapters.TaskAction) bool {
 		}
 	}
 
-	if deleteCount == 0 && deferCount == 0 {
-		fmt.Println("No actions to perform")
+	if deleteCount == 0 && deferCount == 0 && revalidateCount == 0 && completeCount == 0 {
 		return false
 	}
 
