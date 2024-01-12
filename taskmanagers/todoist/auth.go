@@ -4,10 +4,9 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"golang.org/x/oauth2"
 	"github.com/dormunis/gitd/adapters"
+	"golang.org/x/oauth2"
 	"net/http"
-	"os"
 	"os/exec"
 	"runtime"
 	"sync"
@@ -32,13 +31,13 @@ func GenerateAccessToken(todoistConfig adapters.TodoistConfig) (string, error) {
 	case adapters.AuthTypeToken:
 		return *todoistConfig.AuthToken, nil
 	case adapters.AuthTypeOAuth2:
-		return PerformOAuthFlow(todoistConfig), nil
+		return PerformOAuthFlow(todoistConfig)
 	default:
 		return "", fmt.Errorf("unknown auth type: %s", todoistConfig.AuthType)
 	}
 }
 
-func PerformOAuthFlow(todoistConfig adapters.TodoistConfig) string {
+func PerformOAuthFlow(todoistConfig adapters.TodoistConfig) (string, error) {
 	// TODO: sync api is not supported by oauth2, reuse when i have a server
 	clientID := *todoistConfig.ClientID
 	clientSecret := *todoistConfig.ClientSecret
@@ -58,26 +57,31 @@ func PerformOAuthFlow(todoistConfig adapters.TodoistConfig) string {
 
 	token, err := loadTokenFromKeychain()
 	if token == nil || err != nil {
-		StartAuthServer(done)
+		err := StartAuthServer(done)
+		if err != nil {
+			return "", err
+		}
+
 		<-done
 
 		if err != nil {
-			fmt.Println("Error getting auth token:", err)
-			os.Exit(1)
+			return "", err
 		}
 
 		if err := saveTokenToKeychain(authToken); err != nil {
-			fmt.Println("Error saving token to keychain:", err)
-			os.Exit(1)
+			return "", err
 		}
 	}
 
-	return token.AccessToken
+	return token.AccessToken, nil
 }
 
-func StartAuthServer(done chan struct{}) {
+func StartAuthServer(done chan struct{}) error {
 	http.HandleFunc("/callback", authenticate)
-	open(oauthConfig.AuthCodeURL(state))
+	err := open(oauthConfig.AuthCodeURL(state))
+	if err != nil {
+		return err
+	}
 	go func() {
 		err := http.ListenAndServe(fmt.Sprintf(":%d", redirectUriPort), nil)
 		if err != nil && err != http.ErrServerClosed {
@@ -85,6 +89,7 @@ func StartAuthServer(done chan struct{}) {
 		}
 		close(done)
 	}()
+	return nil
 }
 
 func open(url string) error {

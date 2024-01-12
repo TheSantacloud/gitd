@@ -25,6 +25,7 @@
 - [ ] alfred plugin
 - [ ] daily planner/journal(?)
 - [ ] provide non-interactive replacements for interactive actions
+- [ ] use vim (or any other editor) for the purge process (as a file like kubectl edit)
 
 ### Code
 
